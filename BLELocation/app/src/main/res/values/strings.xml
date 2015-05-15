@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">BLELocation</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="start">Start</string>
+    <string name="next_scan">Next scan</string>
+    <string name="stop">Stop</string>
+
+    <string name="x_coord">X-coordinate</string>
+    <string name="y_coord">Y-coordinate</string>
+    <string name="scan_length">Scan Length (s)</string>
+    <string name="default_scan_length">60</string>
+    <string name="scan">Scan</string>
+    <string name="title_activity_main">BLE Indoor Location</string>
+
+
+    <string name="fingerprinting">Fingerprinting</string>
+    <string name="motion_tracking">Motion Tracking</string>
+    <string name="beacon_manger">Beacon Manager</string>
+    <string name="beacon_options">Beacon options</string>
+
+    <string name="advertise_rate">Advertise rate (ms)</string>
+    <string name="broadcast_power">Broadcast power</string>
+
+    <string name="modify_beacon_settings_success">Successfully wrote new beacon setting values.</string>
+    <string name="modify_beacon_settings_advertise_failure">Error: failure in writing new advertising rate setting value to estimote.</string>
+    <string name="modify_beacon_settings_power_failure">Error: failure in writing new broadcast power setting value to estimote.</string>
+    <string name="modify_beacon_settings_both_failure">Error: failure in writing new beacon setting values to estimote.</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

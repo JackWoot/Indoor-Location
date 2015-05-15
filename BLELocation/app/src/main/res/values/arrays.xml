@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="beacon_options">
+        <item>Set advertising rate</item>
+        <item>Set broadcasting power</item>
+    </array>
+</resources>

@@ -1,0 +1,79 @@
+---
+title: "Indoor Location"
+author: "Jonny, Tom, Jack"
+date: "30 March 2015"
+output: 
+  beamer_presentation:
+      fig_caption: true
+---
+
+## More Phone Problems
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+setwd("/Users/jonny/Documents/Study/locationcode/SpatialStatistics/")
+source("TidyData.r")
+source("EmpiricalKriging.R")
+train = cleanData("Data/train.csv")
+test = cleanData("Data/test.csv")
+library(ggplot2)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Number of RSSI readings at each surveyed point, we can see lots of ones :(", fig.height=6}
+plotData = train %>% filter(x >= 0 & x <= 10 & address %in% c("B1", "B2", "B4"))
+plotData = plotData %>% group_by(x,y,address) %>% summarise(count = n())
+
+ggplot(plotData, aes(x = x, y = y, label = count)) + 
+  geom_text() + 
+  facet_wrap(~address) +
+  theme_bw() + ggtitle("Number of observations at each point")
+```
+
+## Trying to figure out what a certain paper means
+
+Given a vector of $n$ RSSI readings, $\textbf{s} = (s_1, \dots, s_n)^T$, we want to calculate a position in $\mathbb{R}^2$, $\textbf{x} = (x,y)^T$. We use Bayes' rule:
+
+$$ P(\textbf{x}|\textbf{s}) = \frac{P(\textbf{s}|\textbf{x})P(\textbf{x})}{\int P(\textbf{s}|\textbf{x}) P(\textbf{x}) d\textbf{x}}. $$
+
+When calculating the MAP estimate using a Uniform prior for $P(\textbf{x})$, we can simplify Bayes' Rule:
+
+$$ P(\textbf{x}|\textbf{s}) \propto P(\textbf{s}|\textbf{x}). $$
+
+## Choosing the Likelihood Function
+
+We must decide on a function for the likelihood, $P(\textbf{s}|\textbf{x}).$ The paper we read chose an exponential kernel:
+
+\begin{equation}
+\begin{aligned}
+ P(\textbf{s}|\textbf{x}) &= e^{-\frac{F}{2\sigma^2}}, \\
+ \mathrm{where } F &= \sqrt{\frac{\sum_{i=1}^n(s_i - m_i)}{n}}.
+\end{aligned}
+\end{equation}
+
+$F$ represents the euclidean distance from a test fingerprint and a training fingerprint. $\sigma$ represents the measurement error from the test point, however the paper did not specify how it arrived at this value.
+
+## Choosing the correct Value for the SD
+
+We're not sure how to do this!
+
+## MAP Estimate Results
+
+```{r, echo=FALSE, fig.cap="Probability heat map for the positions in the test data, X is the actual point, O is the MAP estimate.", message=FALSE, warning=FALSE, fig.height=6}
+estimotes = train$address %>% unique()
+radioMaps = data.frame()
+
+for (estimote in estimotes) {
+  radioMaps = rbind(radioMaps, generateRadioMap(estimote = estimote, data = train))
+}
+
+# predict
+predictions = mapEstimate(radioMaps = radioMaps, testData = test)
+
+# X is the actual point, O is the predicted one
+plotMapEstimate(predictions = predictions)
+```
+
+## Trilateration
+
+## K-NN
+
+We can use the generated radio maps to perform K-NN.
